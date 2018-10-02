@@ -42,7 +42,6 @@ public class FindById {
         btn8 = activity.findViewById(R.id.img8);
 
         btn9 = activity.findViewById(R.id.img9);
-        btnFile = activity.findViewById(R.id.btn_file);
 
         drawableDefau = btn.getBackground();
         textView = this.activity.findViewById(R.id.txt_touch);

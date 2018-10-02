@@ -37,19 +37,13 @@ public class ChooseFile {
         return findId;
     }
 
-    public void actionButton(Button b) {
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public void actionButton() {
                 ImagePicker.create(activity).showCamera(true).single().returnMode(ReturnMode.ALL).limit(1).start();
             }
-        });
-    }
 
     public void chooseOk(ImageView imageView, Intent data, ImageButton btn1, ImageButton btn2, ImageButton btn3, ImageButton btn4, ImageButton btn5, ImageButton btn6, ImageButton btn7, ImageButton btn8, ImageButton btn9) {
         Image image = ImagePicker.getFirstImageOrNull(data);
         if (image != null) {
-
             //imageView.setImageBitmap(BitmapFactory.decodeFile(image.getPath()));
 
             imageView.setBackground(new BitmapDrawable(activity.getResources(), BitmapFactory.decodeFile(image.getPath())));
