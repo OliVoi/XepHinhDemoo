@@ -1,8 +1,10 @@
 package com.viettelpost.remoteconfig.xephinhdemoo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,18 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
-    private Drawable drawableDefau, drawable1, drawable2, drawable3, drawable4, drawable5, drawable6, drawable7, drawable8, drawable9;
-    private Drawable d1, d2, d3, d4, d5, d6, d7, d8, d9;
+    private ImageButton btn, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
+    private Drawable drawableDefau, drawable, drawable1, drawable2, drawable3, drawable4, drawable5, drawable6, drawable7, drawable8, drawable9;
+    private Drawable d, d1, d2, d3, d4, d5, d6, d7, d8, d9;
     private LinearLayout linearLayout;
     private TextView textView;
-    private Button btnNew;
+    private ImageView image_all;
+    private Button btnFile;
     private int index = 0;
     private String arrId[] = {"img1", "img2", "img3", "img4", "img5", "img6", "img7", "img8", "img9"};
 
@@ -31,10 +37,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         finId();
         getDrawDefau();
+        ChooseFile.getChoose(this).actionButton(btnFile);
+    }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
+            ChooseFile.getChoose(this).chooseOk(image_all, data, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public static int getScreenWidth() {
@@ -48,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void getDrawDefau() {
+        drawable = d = btn.getBackground();
         drawable1 = d1 = btn1.getBackground();
         drawable2 = d2 = btn2.getBackground();
         drawable3 = d3 = btn3.getBackground();
@@ -61,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void finId() {
+        btn = findViewById(R.id.img);
+        btn.setOnClickListener(this);
+
         btn1 = findViewById(R.id.img1);
         btn1.setOnClickListener(this);
 
@@ -88,10 +106,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn9 = findViewById(R.id.img9);
         btn9.setOnClickListener(this);
 
-        drawableDefau = btn1.getBackground();
-        textView = findViewById(R.id.txt_touch);
-        btnNew = findViewById(R.id.btn_new);
+        btnFile = findViewById(R.id.btn_file);
 
+        drawableDefau = btn.getBackground();
+        textView = findViewById(R.id.txt_touch);
+        image_all = findViewById(R.id.img_all);
 
     }
 
@@ -99,8 +118,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.btn_new:
-                newGame();
+
+            case R.id.img:
+                drawable = btn.getBackground();
+                drawable1 = btn1.getBackground();
+
+                if (drawable1 == drawableDefau) {
+                    valueTouch();
+                    btn1.setBackground(drawable);
+                    btn.setBackground(drawableDefau);
+                }
                 break;
             case R.id.img1:
                 drawable1 = btn1.getBackground();
@@ -114,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (drawable4 == drawableDefau) {
                     valueTouch();
                     btn4.setBackground(drawable1);
+                    btn1.setBackground(drawableDefau);
+                }
+                drawable = btn.getBackground();
+                if (drawable == drawableDefau) {
+                    valueTouch();
+                    btn.setBackground(drawable1);
                     btn1.setBackground(drawableDefau);
                 }
                 break;
@@ -284,9 +317,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
-        if (index > 0 && drawable1 == d1 && drawable2 == d2 && drawable3 == d3 && drawable4 == d4 && drawable5 == d5 && drawable7 == d7 && drawable8 == d8 && drawable9 == d9 && drawable6 == d6) {
-            Toast.makeText(this, "Win", Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     public void valueTouch() {
@@ -295,4 +326,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textView.setText(v);
     }
 
+    private void CheckWin() {
+        if (index > 0 && drawable1 == d1 && drawable2 == d2 && drawable3 == d3 && drawable4 == d4 && drawable5 == d5 && drawable7 == d7 && drawable8 == d8 && drawable9 == d9 && drawable6 == d6) {
+            Toast.makeText(this, "Win", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
